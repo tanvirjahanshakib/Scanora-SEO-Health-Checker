@@ -801,8 +801,18 @@ function setupTabs() {
       panels.forEach((p) => p.classList.remove("active"));
       tab.classList.add("active");
       document.querySelector(`.panel[data-panel="${tab.dataset.tab}"]`).classList.add("active");
+      tab.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
     });
   });
+
+  const tabBar = document.getElementById("tabs");
+  if (tabBar) {
+    tabBar.addEventListener("wheel", (e) => {
+      if (e.deltaY === 0) return;
+      e.preventDefault();
+      tabBar.scrollLeft += e.deltaY;
+    }, { passive: false });
+  }
 }
 
 function setupActions() {
