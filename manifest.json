@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Scanora — Premium SEO Suite",
+  "short_name": "Scanora",
+  "version": "1.0.0",
+  "description": "Instant on-page & technical SEO audits, keyword density, link analysis, and site health scoring — all in one premium toolbar.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}
