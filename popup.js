@@ -810,8 +810,9 @@ function setupActions() {
     chrome.tabs.create({ url: "https://chromewebstore.google.com/detail/scanora" });
   });
   document.getElementById("rescanBtn").addEventListener("click", (e) => {
-    e.currentTarget.classList.add("spinning");
-    runScan().finally(() => e.currentTarget.classList.remove("spinning"));
+    const btn = e.currentTarget;
+    btn.classList.add("spinning");
+    runScan().finally(() => btn.classList.remove("spinning"));
   });
   document.getElementById("exportBtn").addEventListener("click", () => {
     if (!currentData) return;
