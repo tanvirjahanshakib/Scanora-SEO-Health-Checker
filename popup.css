@@ -373,18 +373,6 @@ body {
 .compare-table td.lose { color: var(--muted); font-family: var(--font-mono); }
 .compare-table td:first-child { color: var(--text); }
 
-.full-report-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  margin-bottom: 12px;
-  padding: 10px 12px;
-  font-size: 12px;
-}
-.full-report-btn .report-icon { font-style: normal; }
-
 /* ---------- Site audit (robots/sitemap + bounded crawl) ---------- */
 .beta-badge {
   font-size: 9px; font-family: var(--font-mono); font-weight: 600;
