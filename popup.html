@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Scanora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <svg class="brand-mark" width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="9" stroke="#1E293B" stroke-width="3"/>
+          <path d="M11 2 A9 9 0 0 1 18.8 15.5" stroke="#00D9A3" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="11" cy="11" r="2" fill="#E8ECF3"/>
+        </svg>
+        <span class="brand-name">Scanora</span>
+      </div>
+      <div class="header-actions">
+        <button id="fullReportBtn" class="icon-btn" title="Download full audit report (PDF)">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 1.5h5.5L13 5v9a.5.5 0 0 1-.5.5h-8A.5.5 0 0 1 4 14V2a.5.5 0 0 1 .5-.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 8.2h4M6 10.2h4M6 12.2h2.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        </button>
+        <button id="exportBtn" class="icon-btn" title="Download full SEO audit report (PDF)">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1v9.5M8 10.5 4.5 7M8 10.5 11.5 7M2.5 13h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="rescanBtn" class="icon-btn" title="Re-scan this page">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13.5 8A5.5 5.5 0 1 1 11.9 4.1M13.5 2v3.5H10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="full-report-cta" id="fullReportCta">
+      <span>
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:-2px;margin-right:5px;"><path d="M4 1.5h5.5L13 5v9a.5.5 0 0 1-.5.5h-8A.5.5 0 0 1 4 14V2a.5.5 0 0 1 .5-.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.5 1.5V5H13" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Get the complete audit as a formal, printable PDF report
+      </span>
+      <button id="fullReportCtaBtn">Generate report</button>
+    </div>
+
+    <!-- Score hero -->
+    <section class="score-hero">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 120 120" class="ring-svg">
+          <circle cx="60" cy="60" r="52" class="ring-track" />
+          <circle cx="60" cy="60" r="52" class="ring-progress" id="ringProgress" />
+        </svg>
+        <div class="ring-center">
+          <span id="scoreValue" class="score-value">–</span>
+          <span class="score-label">HEALTH</span>
+        </div>
+      </div>
+      <div class="score-side">
+        <div id="pageUrl" class="page-url">Scanning…</div>
+        <div class="chip-row" id="chipRow"></div>
+        <div class="history-row" id="historyRow"></div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="onpage">On-Page</button>
+      <button class="tab" data-tab="technical">Technical</button>
+      <button class="tab" data-tab="content">Content</button>
+      <button class="tab" data-tab="keyword">Keyword</button>
+      <button class="tab" data-tab="links">Links</button>
+      <button class="tab" data-tab="compare">Compare</button>
+      <button class="tab" data-tab="site">Site Audit</button>
+    </nav>
+
+    <!-- Panels -->
+    <main class="panels" id="panels">
+
+      <section class="panel active" data-panel="overview">
+        <button class="btn-primary full-report-btn" id="fullReportBtn">
+          <i class="report-icon">▤</i> Download full audit report
+        </button>
+        <div class="checklist" id="overviewChecklist"></div>
+      </section>
+
+      <section class="panel" data-panel="onpage">
+        <div class="card serp-card" id="serpCard">
+          <h3>Google search preview</h3>
+          <div class="serp-preview" id="serpPreview"></div>
+        </div>
+        <div class="card" id="titleCard"></div>
+        <div class="card" id="descCard"></div>
+        <div class="card" id="headingCard"></div>
+        <div class="card" id="imageCard"></div>
+      </section>
+
+      <section class="panel" data-panel="technical">
+        <div class="card" id="canonicalCard"></div>
+        <div class="card" id="robotsCard"></div>
+        <div class="card" id="viewportCard"></div>
+        <div class="card" id="httpsCard"></div>
+        <div class="card" id="schemaCard"></div>
+        <div class="card" id="perfCard"></div>
+      </section>
+
+      <section class="panel" data-panel="content">
+        <div class="card" id="wordCountCard"></div>
+        <div class="card" id="readabilityCard"></div>
+        <div class="card" id="keywordCard">
+          <h3>Top keywords</h3>
+          <table class="kw-table" id="kwTable"></table>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="keyword">
+        <div class="card">
+          <h3>Target keyword checker</h3>
+          <div class="kw-input-row">
+            <input type="text" id="focusKeywordInput" placeholder="e.g. best running shoes" />
+            <button class="btn-primary" id="checkKeywordBtn">Check</button>
+          </div>
+          <div class="checklist" id="focusKeywordResults"></div>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="links">
+        <div class="card" id="linkSummaryCard"></div>
+        <div class="card" id="brokenLinksCard">
+          <h3>Broken link check</h3>
+          <p class="muted-note">Sends a quick request to every link on this page to find dead ones.</p>
+          <button class="btn-primary" id="checkBrokenBtn">Scan links for errors</button>
+          <div id="brokenLinksResults" class="broken-results"></div>
+        </div>
+        <div class="card" id="socialCard"></div>
+      </section>
+
+      <section class="panel" data-panel="compare">
+        <div class="card">
+          <h3>Compare vs. another page</h3>
+          <p class="muted-note">Fetches the other URL directly in your browser and runs the same audit — nothing goes to a server.</p>
+          <div class="kw-input-row">
+            <input type="text" id="compareUrlInput" placeholder="https://competitor.com/page" />
+            <button class="btn-primary" id="compareBtn">Compare</button>
+          </div>
+          <div id="compareResults"></div>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="site">
+        <div class="card" id="robotsSitemapCard">
+          <h3>robots.txt &amp; sitemap.xml</h3>
+          <p class="muted-note">Checks the two files search engines read first for this domain.</p>
+          <button class="btn-primary" id="checkRobotsSitemapBtn">Check robots.txt &amp; sitemap</button>
+          <div id="robotsSitemapResults"></div>
+        </div>
+
+        <div class="card" id="siteCrawlCard">
+          <h3>Quick site scan <span class="beta-badge">up to 20 pages</span></h3>
+          <p class="muted-note">Follows internal links from this page and audits each one, with a short pause between requests so it never hammers the site. Good for a fast site-wide sanity check — not a full crawler replacement.</p>
+          <button class="btn-primary" id="startCrawlBtn">Scan this site</button>
+          <div class="crawl-progress" id="crawlProgress" style="display:none;">
+            <div class="crawl-progress-bar"><div class="crawl-progress-fill" id="crawlProgressFill"></div></div>
+            <div class="crawl-progress-label" id="crawlProgressLabel">Scanning 0 / 0…</div>
+          </div>
+          <div id="crawlResults"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      <span class="footer-plan">Scanora is free — enjoy!</span>
+      <button class="upgrade-btn" id="rateBtn">Rate us ★</button>
+    </footer>
+  </div>
+
+  <script src="analyzer.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
