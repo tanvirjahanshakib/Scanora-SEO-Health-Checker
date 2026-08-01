@@ -738,17 +738,14 @@ function setupTabs() {
   }
 }
 
-function setupActions() {
-  document.getElementById("rateBtn").addEventListener("click", () => {
-    chrome.tabs.create({ url: "https://chromewebstore.google.com/detail/scanora" });
-  });
-  document.getElementById("rescanBtn").addEventListener("click", (e) => {
-    const btn = e.currentTarget;
-    btn.classList.add("spinning");
-    runScan().finally(() => btn.classList.remove("spinning"));
-  });
-  document.getElementById("exportBtn").addEventListener("click", async () => {
-    if (!currentData) return;
+async function generateFullReport(triggerBtn) {
+  if (!currentData) return;
+  const originalLabel = triggerBtn ? triggerBtn.textContent : null;
+  if (triggerBtn) {
+    triggerBtn.disabled = true;
+    triggerBtn.textContent = "Generating…";
+  }
+  try {
     const checks = buildChecks(currentData);
     const score = computeScore(checks);
     const payload = {
@@ -763,7 +760,25 @@ function setupActions() {
     };
     await chrome.storage.local.set({ scanora_report_payload: payload });
     chrome.tabs.create({ url: chrome.runtime.getURL("report.html") });
+  } finally {
+    if (triggerBtn) {
+      triggerBtn.disabled = false;
+      triggerBtn.textContent = originalLabel;
+    }
+  }
+}
+
+function setupActions() {
+  document.getElementById("rateBtn").addEventListener("click", () => {
+    chrome.tabs.create({ url: "https://chromewebstore.google.com/detail/scanora" });
   });
+  document.getElementById("rescanBtn").addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    btn.classList.add("spinning");
+    runScan().finally(() => btn.classList.remove("spinning"));
+  });
+  document.getElementById("exportBtn").addEventListener("click", () => generateFullReport());
+  document.getElementById("fullReportCtaBtn").addEventListener("click", (e) => generateFullReport(e.currentTarget));
   document.getElementById("checkKeywordBtn").addEventListener("click", runFocusKeywordCheck);
   document.getElementById("focusKeywordInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") runFocusKeywordCheck();
