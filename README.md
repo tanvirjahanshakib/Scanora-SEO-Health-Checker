@@ -1,146 +1,223 @@
-# Scanora — SEO Health Checker (Chrome Extension, free)
+# Scanora — SEO Health Checker
 
 ![Scanora banner](banner.png)
 
 ![Manifest V3](https://img.shields.io/badge/Manifest-V3-00D9A3?style=flat-square)
-![Cost](https://img.shields.io/badge/Cost-Free-7C6CFF?style=flat-square)
-![Server calls](https://img.shields.io/badge/Your%20data-Never%20leaves%20your%20browser-141B2D?style=flat-square)
+![Cost](https://img.shields.io/badge/Cost-100%25%20Free-7C6CFF?style=flat-square)
+![Privacy](https://img.shields.io/badge/Your%20data-Never%20leaves%20your%20browser-141B2D?style=flat-square)
 
-A one-click SEO auditor that scores any page you're on and breaks the
-result down across 8 tabs — a premium-looking dark dashboard, 100%
-free, no sign-up, no API key required for the core features.
+**Scanora** is a premium-grade SEO auditing tool for Google Chrome.
+Open it on any web page and, in under a second, get a complete,
+professionally organized breakdown of that page's search-engine
+health — on-page, technical, content, and link quality — with the
+option to export everything as a formal, print-ready PDF report.
 
-## What it does (all local, nothing sent to any server)
+It is built for site owners, marketers, freelancers, and developers
+who want agency-quality SEO diagnostics without a subscription, a
+sign-up form, or an API key.
 
-- **Health score ring** — weighted score across 9 core SEO checks, with a small trend sparkline showing your last 12 scans of that same site
-- **Overview** — plain-language checklist of what's good/needs fixing
-- **On-Page** — live **Google search result preview**, title & meta description length checks, heading structure (H1-H6), image alt-text audit
-- **Technical** — canonical tag, robots meta, mobile viewport, HTTPS, structured data (JSON-LD), page load time
-- **Content** — word count, **Flesch readability score** with a visual scale, top keyword density table
-- **Keyword** — a **focus-keyword checker** (Yoast-style, but works on any site): type a target phrase and see whether it's in the title, meta description, an H1, the URL, the first 100 words, image alt text, and whether density is healthy
-- **Links** — internal/external/nofollow counts, Open Graph & Twitter Card tags, plus an on-demand **broken-link scanner**
-- **Compare** — paste a competitor's URL and get a live side-by-side table (score, title length, word count, links, alt coverage, readability)
-- **Export** — one click opens a formal, print-ready SEO audit report (cover page, executive summary, every check broken out by category, plus any Focus Keyword / Compare / Site Audit results from that session) in a new tab, with a "Download as PDF" button that uses your browser's built-in print-to-PDF
-- **Site Audit** — checks `/robots.txt` and `/sitemap.xml` on the domain, plus an on-demand **bounded site scan**: follows internal links from the current page and audits up to 20 pages, with a 400ms pause between requests so it never hammers the target site. Shows a live progress bar, then an average score and a per-page list. This is a fast sanity check, not a full crawler replacement (see limitations below).
+---
 
-Backlink graphs, keyword search volume, and competitor rank tracking
-were deliberately left out — they only exist inside paid third-party
-indexes (Ahrefs/Moz/SEMrush/DataForSEO), and faking those numbers
-would make the tool actively misleading.
+## Contents
 
-### Honest limitations
-- The broken-link scanner, Compare tab, and Site Audit crawl all do
-  live fetch() calls from the popup. Sites protected by bot-detection
-  (Cloudflare challenges, login walls) may return unexpected statuses.
-- Readability and keyword density use standard English heuristics.
-- The site crawl is capped at 20 pages and only runs while the popup
-  stays open (closing the popup stops it) — this is a Manifest V3
-  popup limitation, not a bug. For unlimited crawling of large sites,
-  a desktop crawler (Screaming Frog) is the right tool, not a browser
-  extension.
-- The crawl doesn't currently read `Disallow` rules from robots.txt
-  before following links — it's polite (rate-limited, same-origin
-  only) but not robots.txt-aware yet.
+- [What Scanora checks](#what-scanora-checks)
+- [How to install it](#how-to-install-it)
+- [How to use it](#how-to-use-it)
+- [Generating a PDF audit report](#generating-a-pdf-audit-report)
+- [Privacy](#privacy)
+- [Honest limitations](#honest-limitations)
+- [For developers](#for-developers)
 
-## Install locally (for testing)
+---
 
-1. Unzip `scanora-seo-extension.zip` somewhere you'll remember (e.g. Desktop) — you should see `manifest.json` directly inside the folder, not inside another sub-folder.
-2. Open Chrome, type `chrome://extensions` in the address bar, press Enter.
-3. Turn on **Developer mode** (toggle, top-right corner).
-4. Click **Load unpacked** (top-left) → select the unzipped folder.
-5. Scanora's icon appears in the extensions list. Click the puzzle-piece icon in Chrome's toolbar → click the pin next to Scanora so it stays visible.
-6. Open any normal website (not a `chrome://` page) → click the Scanora icon → it scans automatically.
+## What Scanora checks
 
-If you edit any file afterward, go back to `chrome://extensions` and click the refresh icon on Scanora's card to reload your changes.
+Scanora organizes every audit into eight focused tabs:
 
-## Put it on GitHub
+| Tab | What it tells you |
+|---|---|
+| **Overview** | A plain-language checklist of what's healthy and what needs fixing, plus a health-score ring and a trend line across your last 12 scans of that site |
+| **On-Page** | A live **Google search-result preview**, title & meta-description length checks, and heading structure (H1–H6) |
+| **Technical** | Canonical tag, robots meta, mobile viewport, HTTPS, structured data (JSON-LD), and page load time |
+| **Content** | Word count, a **Flesch readability score** on a visual scale, and a top-keyword density table |
+| **Keyword** | A **focus-keyword checker** — enter a target phrase and see instantly whether it appears in the title, meta description, an H1, the URL, the first 100 words, and image alt text |
+| **Links** | Internal / external / nofollow link counts, Open Graph & Twitter Card tags, and an on-demand **broken-link scanner** |
+| **Compare** | Paste a competitor's URL and get a live, side-by-side comparison table — score, title length, word count, links, alt-text coverage, readability |
+| **Site Audit** | Checks `/robots.txt` and `/sitemap.xml`, plus an on-demand **bounded 20-page site scan** that follows internal links and reports an average health score across the site |
 
-This isn't required to use or publish the extension — Chrome only
-needs the zip. But GitHub is the easiest free place to (a) back up
-the code, (b) host `privacy-policy.html` for free via GitHub Pages,
-and (c) let other people see/star/fork it.
+Every check runs **locally, inside your browser** — nothing is sent
+to Scanora or any third party.
 
-**1. Create the repo**
-- Go to https://github.com/new
-- Name it (e.g. `scanora-seo-extension`), keep it **Public**, don't
-  add a README/gitignore/license yet (you already have files locally)
-- Click **Create repository** — GitHub shows you a remote URL, keep
-  that tab open
+---
 
-**2. Push your local folder**
-Run these from inside the `scanora-seo-extension` folder:
+## How to install it
+
+Scanora is distributed directly from GitHub rather than the Chrome
+Web Store, so installation takes two extra clicks compared to a
+store listing — everything else works exactly the same.
+
+1. Go to the repository:
+   **https://github.com/tanvirjahanshakib/Scanora-SEO-Health-Checker**
+2. Click the green **`<> Code`** button → **Download ZIP**.
+3. Find the downloaded file (usually in your **Downloads** folder)
+   and extract it — right-click → **Extract All** on Windows, or
+   double-click on macOS.
+4. Open the extracted folder and confirm `manifest.json` is directly
+   inside it. If you see another folder inside first, open that one
+   — that's the real extension folder.
+5. In Chrome, go to `chrome://extensions`.
+6. Turn on **Developer mode** (top-right toggle).
+7. Click **Load unpacked** and select the folder from step 4.
+8. Scanora's icon now appears in your extensions list. Click the
+   puzzle-piece icon in Chrome's toolbar, then click the pin next to
+   Scanora so it stays visible.
+
+Scanora is now installed. It never expires and never asks for
+payment or an account.
+
+**Updating later:** when a new version is released, repeat steps
+1–4 with the new download, then go to `chrome://extensions` and
+click the refresh icon on Scanora's card.
+
+---
+
+## How to use it
+
+1. Open any normal website (not a `chrome://` page).
+2. Click the **Scanora** icon in your toolbar.
+3. The page is scanned automatically — no button press needed. A
+   health-score ring appears at the top within a second.
+4. Move across the tabs (**Overview → Site Audit**) to explore each
+   category. If more tabs than fit are visible, scroll sideways
+   inside the tab bar with your mouse wheel or trackpad.
+5. On the **Keyword** tab, type in the phrase you're targeting and
+   click **Check** to see exactly where it does and doesn't appear.
+6. On the **Compare** tab, paste a competitor's URL to see both
+   pages' key metrics side by side.
+7. On the **Site Audit** tab, click **Check robots.txt & sitemap**
+   for an instant file check, or **Scan this site** to audit up to
+   20 internal pages in one pass.
+8. Click the refresh icon in the header at any time to re-scan the
+   current page after making changes to it.
+
+---
+
+## Generating a PDF audit report
+
+Click **Generate report** (the banner just below the header) or the
+download icon next to it. This opens a new tab containing a formal,
+print-ready report — cover page, executive summary, and every check
+broken out by category, including any Keyword, Compare, or Site
+Audit results from that session.
+
+Inside that tab, click **Download as PDF**. This uses your browser's
+built-in print-to-PDF engine, so the result is a real, selectable-text
+PDF suitable for sharing with a client or a team — not a screenshot.
+
+---
+
+## Privacy
+
+Scanora requests broad host permissions (`<all_urls>`) because it is
+a general-purpose tool meant to work on any site you choose to
+inspect — not because it collects data from those sites. Everything
+Scanora reads is used only to render results inside the popup or the
+report tab, on your device. Nothing is transmitted to Scanora's
+developer or to any analytics or advertising service.
+
+The **Compare**, broken-link scanner, and **Site Audit** scan do make
+direct network requests from your browser to the URLs you provide or
+that the current page links to — this is necessary to analyze those
+pages, and it happens only when you explicitly trigger it.
+
+---
+
+## Honest limitations
+
+Scanora deliberately does **not** include backlink graphs, keyword
+search-volume data, or competitor rank tracking. That data only
+exists inside paid third-party indexes (Ahrefs, Moz, SEMrush,
+DataForSEO) — no browser extension can generate it locally, and
+faking those numbers would make the tool actively misleading rather
+than useful.
+
+A few other things worth knowing:
+
+- The broken-link scanner, Compare tab, and Site Audit scan all make
+  live requests from the popup. Sites with aggressive bot-detection
+  (Cloudflare challenges, login walls) may return unexpected results.
+- Readability and keyword-density scoring use standard English-text
+  heuristics.
+- The Site Audit scan is capped at 20 pages and runs only while the
+  popup stays open — a Manifest V3 platform limitation, not a bug.
+  For unlimited crawling of large sites, a dedicated desktop crawler
+  (e.g. Screaming Frog) is the right tool for the job.
+- The scan does not yet read `Disallow` rules from `robots.txt`
+  before following links. It is rate-limited and same-origin only,
+  but not yet robots.txt-aware.
+
+---
+
+## For developers
+
+<details>
+<summary>Publishing your own fork to the Chrome Web Store</summary>
+
+1. Zip the folder contents with `manifest.json` at the zip root.
+   `privacy-policy.html`, `store-listing.md`, `banner.png`, and
+   `make_banner.py` don't need to ship inside the extension zip.
+2. Create a one-time developer account ($5, one-time fee):
+   https://chrome.google.com/webstore/devconsole
+3. Host `privacy-policy.html` publicly (GitHub Pages works — see
+   below) and paste that URL into the dashboard's Privacy tab.
+4. Upload the zip, then paste the copy from `store-listing.md` into
+   the listing fields.
+5. Add 1–5 screenshots and submit for review.
+
+</details>
+
+<details>
+<summary>Hosting the privacy policy with GitHub Pages</summary>
+
+1. In your repo, go to **Settings → Pages**.
+2. Under "Build and deployment", set Source = **Deploy from a
+   branch**, Branch = `main`, folder = `/ (root)` → **Save**.
+3. After a minute, the policy is live at:
+   `https://<your-username>.github.io/Scanora-SEO-Health-Checker/privacy-policy.html`
+
+</details>
+
+<details>
+<summary>Setting the repo's social preview image</summary>
+
+**Settings → General → scroll to "Social preview" → Edit → Upload an
+image** → choose `banner.png`. This is the image shown when the repo
+link is shared on X/LinkedIn/Slack.
+
+</details>
+
+<details>
+<summary>File structure</summary>
+
 ```
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/<your-username>/scanora-seo-extension.git
-git push -u origin main
-```
-(Replace `<your-username>` with your actual GitHub username.)
-
-**3. Add a `.gitignore`** so junk never gets committed:
-```
-node_modules/
-*.zip
-.DS_Store
-```
-
-**4. Host the privacy policy for free with GitHub Pages**
-- In the repo, go to **Settings → Pages**
-- Under "Build and deployment", set Source = **Deploy from a branch**,
-  Branch = `main`, folder = `/ (root)` → Save
-- After a minute, your policy is live at:
-  `https://<your-username>.github.io/scanora-seo-extension/privacy-policy.html`
-- Paste that exact URL into the Chrome Web Store dashboard's Privacy
-  tab (step 3 below)
-
-**5. (Optional) Attach the zip as a GitHub Release**
-So people can download a ready-to-load zip without cloning:
-- Repo page → **Releases** (right sidebar) → **Create a new release**
-- Tag it `v1.0.0`, title "Scanora v1.0.0", drag in
-  `scanora-seo-extension.zip` as a binary attachment → **Publish release**
-- Every time you update the extension, bump `version` in
-  `manifest.json` and cut a new release with a new tag (`v1.1.0`, etc.)
-
-**6. Write a short top-of-README description** (GitHub shows this on
-the repo page) — the opening two paragraphs of this file already work
-for that.
-
-**7. (Optional) Set the repo's social preview image** — this is the
-image people see when your repo link is shared on Twitter/LinkedIn:
-- **Settings → General → scroll to "Social preview" → Upload an image**
-- Upload `banner.png` (already in this folder, sized right for it)
-
-## Publish to the Chrome Web Store (free listing)
-
-1. Zip the folder contents (manifest.json at the zip root). privacy-policy.html, store-listing.md, banner.png, and make_banner.py don't need to ship inside the extension zip.
-2. Create a one-time $5 developer account: https://chrome.google.com/webstore/devconsole
-3. Paste your GitHub Pages privacy policy URL (from the GitHub section above) into the dashboard's Privacy tab.
-4. Upload the zip, then paste the copy from store-listing.md into the dashboard.
-5. Add 1-5 screenshots.
-6. Submit for review.
-
-## File structure
-
 manifest.json          Manifest V3 config
-popup.html/.css/.js    The toolbar dashboard (8 tabs, incl. Site Audit)
-report.html/.css/.js   Formal printable SEO audit report (opens in a new
-                        tab from the Export button; "Download as PDF" uses
-                        window.print())
-analyzer.js            Shared, pure scoring library - used by content.js
-                        (live page) and popup.js (Compare tab + Site crawl)
-content.js             Runs analyzer.js against the live page
-background.js          Minimal service worker (badge color only)
-icons/                 16/32/48/128 px icons
-privacy-policy.html    Host this publicly (see GitHub Pages steps above)
-store-listing.md       Pre-written Store listing copy
-banner.png              GitHub README banner / social preview image
-report.html/.css/.js   Formal, printable full audit report (opens in a
-                        new tab from the popup's "Export" button — click
-                        "Download as PDF" there to save it via the
-                        browser's native print-to-PDF)
+popup.html/.css/.js    The toolbar dashboard (8 tabs)
+report.html/.css/.js   Formal printable audit report, opened from
+                        the "Generate report" button; "Download as
+                        PDF" uses the browser's native print-to-PDF
+analyzer.js             Shared, pure scoring library — used by
+                        content.js (live page) and popup.js
+                        (Compare tab + Site Audit scan)
+content.js              Runs analyzer.js against the live page
+background.js           Minimal service worker (badge color only)
+icons/                  16 / 32 / 48 / 128 px icons
+privacy-policy.html     Public privacy policy (see Pages steps above)
+store-listing.md        Pre-written Chrome Web Store listing copy
+banner.png              README banner / social preview image
+```
 
-## Naming
-"Scanora" is short and reads as premium - do a quick search on the
-Chrome Web Store before publishing to make sure the name is free.
+</details>
+
+---
+
+<p align="center"><sub>Built with Manifest V3 · No account, no API key, no tracking</sub></p>
