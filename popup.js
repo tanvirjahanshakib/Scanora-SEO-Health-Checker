@@ -770,7 +770,7 @@ async function generateFullReport(triggerBtn) {
 
 function setupActions() {
   document.getElementById("rateBtn").addEventListener("click", () => {
-    chrome.tabs.create({ url: "https://chromewebstore.google.com/detail/scanora" });
+    chrome.tabs.create({ url: "https://github.com/tanvirjahanshakib/Scanora-SEO-Health-Checker" });
   });
   document.getElementById("rescanBtn").addEventListener("click", (e) => {
     const btn = e.currentTarget;
